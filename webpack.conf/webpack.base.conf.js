@@ -3,6 +3,9 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { VueLoaderPlugin } = require("vue-loader");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
 
 const PATHS = {
 	src: path.join(__dirname, "../src"),
@@ -27,6 +30,8 @@ module.exports = {
 		publicPath: "/"
 	},
 	optimization: {
+		minimize: true,
+		
 		splitChunks: {
 			cacheGroups: {
 				vendor: {
@@ -93,7 +98,7 @@ module.exports = {
 						}
 					}
 				]
-			},
+			},			
 			{
 				test: /\.css$/,
 				use: [
@@ -110,7 +115,7 @@ module.exports = {
 						options: {
 							sourceMap: true,                       
 						}
-					},                
+					}               
 				]
 			}
 		]
@@ -129,12 +134,20 @@ module.exports = {
 			// Options similar to the same options in webpackOptions.output
 			// both options are optional
 			filename: `${PATHS.assets}css/[name].[contenthash].css`,
-			//   chunkFilename: '[id].css',
+			// chunkFilename: `${PATHS.assets}css/[id].css`,
 		}),
+		new OptimizeCssAssetsPlugin({
+			cssProcessor: require('cssnano'),
+			cssProcessorPluginOptions: {
+			  preset: ['default', { discardComments: { removeAll: true } }],
+			},
+			canPrint: true
+		  }),
 		new HtmlWebpackPlugin({
 			template: `${PATHS.src}/index.html`,
 			filename: "./index.html",
-			inject: false // позволяет отменить автоматическую вставку скриптов и css в шаблон
+			//inject: false // позволяет отменить автоматическую вставку скриптов и css в шаблон,
+			xhtml: true,
 		}),
 		new CopyWebpackPlugin([
 			{
@@ -149,6 +162,7 @@ module.exports = {
 				from: `${PATHS.src}/static`,
 				to: ""
 			}
-		])
+		]),
+		new CleanWebpackPlugin(),
 	],
 };

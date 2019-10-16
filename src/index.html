@@ -5,17 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <title></title>
-        <% for (var item of htmlWebpackPlugin.files.css) { %>
-            <link href="<%= item %>" rel="stylesheet" />
-        <% } %>
+       
     </head>
     <body>
         <div  id="app" class="wrapper">
             <h1>Webpack</h1>
             <example-component></example-component>
         </div>
-        <% for (var item of htmlWebpackPlugin.files.js) { %>
-            <script src="<%= item %>"></script>
-        <% } %>
+       
     </body>
 </html>
