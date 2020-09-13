@@ -14,6 +14,9 @@
 # misc
 .DS_Store
 .idea
+dist
+/dist
+.cache
 
 npm-debug.log*
 yarn-debug.log*
